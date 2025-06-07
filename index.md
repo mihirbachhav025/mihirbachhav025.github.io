@@ -1,5 +1,8 @@
-Here you can say lots of fun things about your site.
+**Hello There!**
+Welcome to my blog Ocatrine Chronicles!
 
-Maybe say a some things about yourself.
+I'm **Mihir**, currently working as a Data Engineer at Gep Worldwide.
+This blog is where I share my learnings, projects, and personal journey -
+through code, curiosity, and life.
 
-Or maybe what you plan to blog about.
+Feel free to reach out if you'd like to connect - I'd love to hear from you
