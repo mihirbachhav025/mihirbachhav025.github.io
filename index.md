@@ -1,7 +1,7 @@
 **Hello There!**
 Welcome to my blog Ocatrine Chronicles!
 
-I'm **Mihir**, currently working as a Data Engineer at Gep Worldwide.
+I'm **Mihir**, currently working as a **Data Engineer at Gep Worldwide**.
 This blog is where I share my learnings, projects, and personal journey -
 through code, curiosity, and life.
 
