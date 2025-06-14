@@ -1,7 +1,7 @@
 # <p align="center">SQL Window Functions</p>   
 
 Sql window functions are a set of powerful analytical functions that help us to do row level computations.  
-They differ from group by function by maintaining the row level granularity while performing calculations like aggregation at same time.As a result window functions are helpful in advanced data analysis  
+They differ from group by function by maintaining the row level granularity while performing calculations like aggregation at same time.As a result window functions are helpful in advanced data analysis.  
 
 Simple Example of Granularity Preservation:  
 
@@ -29,7 +29,7 @@ GROUP BY Product;
 | Milk    | 50          |
 | Bread   | 11          |
 
-Notice that the result aggregates the sales per product and does not preserve the original row granularity.We are getting 2 rows instead of the original 4 rows  
+Notice that the result aggregates the sales per product and does not preserve the original row granularity. We are getting 2 rows instead of the original 4 rows  
 
 But if we use the `Window function` instead:
 
@@ -72,13 +72,13 @@ Value functions return a value from another row in the window frame relative to 
 - `LAG(EXPR, offset, default)`, `LEAD(EXPR, offset, default)`,  `FIRST_VALUE(EXPR)`, `LAST_VALUE(EXPR)`, `NTH_VALUE(EXPR, n)`
 
 *Note:*  
-1. Window Fucntion are allowed only in the select or order by part of sql query  
+1. Window Functions are allowed only in the select or order by part of the SQL query.  
 
-2. Window Fucntions cannot be nested  
+2. Window Functions cannot be nested.  
 
-3. Window Functions are executed after the where clause (if present )  
+3. Window Functions are executed after the WHERE clause (if present).  
 
-4. Window Function can be used together with group by only if both have same columns(Since group by has a fixed granularity)  
+4. Window Function can be used together with group by only if both have the same columns(Since group by has a fixed granularity)  
 
 <hr>
   
@@ -86,23 +86,23 @@ Let's first understand the basic structure of a window function query with this 
 ```sql
 AVG(Sales) OVER (PARTITION BY Product ORDER BY Day ROWS UNBOUNDED PRECEDING)
 ```
-- `AVG(Sales)`: Window Function Action(Expression) - Calculation performed on the window.The expression can contain column name,be empty,contain integer value,conditional logic or multiple arguments depending upon the window function being used.  
+- `AVG(Sales)`: Function_Action(Expression) -> Calculation performed on the window.The expression can contain a column name, be empty, contain an integer value, conditional logic, or multiple arguments depending upon the window function being used.  
   
 
 - `OVER`: Indicates the use of a window function and defines the window.  
 
-- `PARTITION BY `: Divides the data into partitions based upon the passed columns(we can pass multiple columns),Calculation then takes place on this partitions individually.It is an optional clause,if we dont pass it over will consider the whole dataset as one window
+- `PARTITION BY `: Divides the data into partitions based upon the passed columns(we can pass multiple columns), Calculation then takes place on these partitions individually.It is an optional clause; if we don't pass it over will consider the whole dataset as one window
   
 
-- `ORDER BY `: Orders rows within each partition.This clause is optional in aggregation but complusory in rank and value functions
+- `ORDER BY `: Orders rows within each partition. This clause is optional in aggregation but compulsory in rank and value functions
   
 
-- `ROWS UNBOUNDED PRECEDING`: This is known as the frame clause and it defines a subset od rows within each window that is to be considered for the calculation.I'll be explaining the frame clause in detail below
+- `ROWS UNBOUNDED PRECEDING`: This is known as the frame clause and it defines a subset of rows within each window that is to be considered for the calculation. I'll be explaining the frame clause in detail below
 <hr>
 
 ### Deep Dive into the Frame Clause ###  
 
-Frame clause allows us to define a scope inside the window, so calculations are performed only on a specific subset of rows within each partition.
+The frame clause allows us to define a scope inside the window, so calculations are performed only on a specific subset of rows within each partition.
 
 Below, the highlighted cells show how the running total is calculated for each row using:
 
@@ -129,14 +129,14 @@ Parts of a Frame Clause:
 ```
 ROWS BETWEEN CURRENT ROW AND UNBOUNDED PRECEDING 
 ```
-- Rows : Defines the Frame Type  
+- Rows: Defines the Frame Type  
     - Rows
     - Range
-- Current Row : Frame Boundary(Lower Value)
+- Current Row: Frame Boundary(Lower Value)
     - Current Row
     - N Preceding
     - Unbounded Preceding
-- UnBounded Preceding : Frame Boundary(Higher Value)
+- Unbounded Preceding: Frame Boundary(Higher Value)
     - Current Row
     - N Following
     - Unbounded Following
@@ -148,7 +148,7 @@ ROWS BETWEEN CURRENT ROW AND UNBOUNDED PRECEDING
 
 <hr>  
 
-Now Let's take a look at each window function in Detail.We will be using sparksql and pyspark to query the data
+Now let's take a look at each window function in Detail. We will be using Spark SQL and pyspark to query the data
 
 ## Aggregate Window Functions: ##
 
@@ -160,7 +160,7 @@ Now Let's take a look at each window function in Detail.We will be using sparksq
 
 1. `PARTITION BY`, `ORDER BY`, and the `Frame Clause` are all optional for aggregate window functions. If omitted, the function operates over the entire result set.
 2. The data type of the expression should be numeric for `SUM` and `AVG`, and any comparable type (numeric, date, etc.) for `MIN` and `MAX`.
-3. The Frame Clause can only be used if `ORDER BY` is specified.If `ORDER BY` is specified a default frame clause of `ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW` is applied(also called as running Total)
+3. The Frame Clause can only be used if `ORDER BY` is specified. If `ORDER BY` is specified, a default frame clause of `ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW` is applied(also called a running Total)
 
 [Data](https://github.com/mihirbachhav025/mihirbachhav025.github.io/blob/7d667919c683316e188c59a8991c7e72519812b2/codes/Generate%20Sample%20Data.py) :
 
@@ -175,14 +175,14 @@ Now Let's take a look at each window function in Detail.We will be using sparksq
 | 7  | 2025-06-04 | Laptop  | Los Angeles | 1250  |
 | 8  | 2025-06-04 | Phone   | Chicago     | 780   |  
 
-```
+```py
 from pyspark.sql.window import Window
 from pyspark.sql.functions import count
 
 #Pyspark
 sales_df.withColumn('Count', count('*').over(Window.partitionBy())).display()
 # Note: We cannot leave over empty in pyspark
-#Instead of * we can specify individual column names but null values wont be counted
+#Instead of *, we can specify individual column names, but null values won't be counted
 
 #Sql
 spark.sql(f'''select *,count(*) over() as Count from sales_Df''').display()
@@ -203,7 +203,7 @@ Output:
 | 8  | 2025-06-04 | Phone   | Chicago     | 780   | 8     |
 
   
-```
+```py
 #Pyspark
 sales_df.withColumn('Avg_Overall_Sales', avg('Sales').over(Window.partitionBy()))\
     .withColumn('Avg_City_Sales', avg('Sales').over(Window.partitionBy('City')))\
@@ -244,13 +244,13 @@ Output:
 
 ## RANK Window Functions: ##
 
-In Rank window Functions the Expression part is empty( except NTILE(N) ) ,Partition By is optional and Order By is required and Frame Clause is not allowed
+In the Rank window function, the Expression part is empty(except NTILE(N)), Partition By is optional, and Order By is required, and the Frame Clause is not allowed.
 
-Following Functions generate Integer ranking and are used for Top/Bottom N Analysis:
+The Following Functions generate an Integer ranking and are used for Top/Bottom N Analysis:
 
 - `ROW_NUMBER()`: Assigns a unique sequential integer to each row within a partition, starting at 1.
   
-```
+```py
 #Pyspark
 sales_df.withColumn('RowNumber', row_number().over(Window.orderBy('Sales'))).display()
 sales_df.withColumn('RowNumber_partitioned', row_number().over(Window.partitionBy('City').orderBy('Sales'))).display()
@@ -293,7 +293,7 @@ Output:
 - `RANK()`: Assigns a rank to each row within a partition, with gaps in the ranking for tied values.
 
   
-```
+```py
 #Pyspark
 sales_df.withColumn('rank', rank().over(Window.orderBy('Sales'))).display()
 sales_df.withColumn('rank_partitioned', rank().over(Window.partitionBy('City').orderBy('Sales'))).display()
@@ -318,7 +318,7 @@ Output:
 | 7  | 2025-06-04 | Laptop  | Los Angeles | 1250  | 8         |
 
   
-***Notice that it tied for 4<sup>th</sup> place,hence rank 5 was skipped and 6 followed 4***
+***Notice that it tied for 4<sup>th</sup> place, hence rank 5 was skipped and 6 followed 4***
 
   
 | id | Date       | Product | City        | Sales | rank_partitioned |
@@ -362,7 +362,7 @@ Output:
 | 7  | 2025-06-04 | Laptop  | Los Angeles | 1250  | 7          |  
 
 
-***Notice that it tied for 4<sup>th</sup> place,then next rank was 5 hence no gap was left***    
+***Notice that it tied for 4<sup>th</sup> place, then the next rank was 5, hence no gap was left as rank was continous***    
 
 
 | id | Date       | Product | City        | Sales | dense_rank_partitioned |
@@ -379,9 +379,9 @@ Output:
 
 <br>
 
-- `NTILE(n)`: Divides the result set into `n` approximately equal groups (tiles) and assigns a group number to each row.If division is not perfect the larger group will come first
+- `NTILE(n)`: Divides the result set into `n` approximately equal groups (tiles) and assigns a group number to each row. If division is not perfect, the larger group will come first
 
-```
+```py
 #Pyspark
 sales_df.withColumn('ntilebucket_1', ntile(1).over(Window.orderBy('Sales'))).\
     withColumn('ntilebucket_3', ntile(3).over(Window.orderBy('Sales'))).\
@@ -407,7 +407,7 @@ spark.sql(f''' select *,ntile(1) over (order by Sales) as ntilebucket_1,ntile(3)
 <br>
 
 
-Following functions generate percentage based ranking and are used for distribution analysis:
+The following functions generate percentage-based ranking and are used for distribution analysis:
 
 
 - `CUME_DIST()`: Calculates the cumulative distribution of a value within a partition, returning a value between 0 and 1 that represents the proportion of rows with values less than or equal to the current row.
@@ -415,7 +415,7 @@ In simple terms, `CUME_DIST()` is calculated as:
 
     CUME_DIST = (Position Number) / (Total number of rows)
 
-    During a tie for position number last occurence row number value is considered
+    During a tie for position number last occurrence row number value is considered
 
 
 - `PERCENT_RANK()`: Computes the relative rank of a row within a partition as a percentage, ranging from 0 to 1.
@@ -423,9 +423,9 @@ In simple terms, `PERCENT_RANK()` is calculated as:
 
     PERCENT_RANK = (Position Number)-1 / (Total number of rows)-1
 
-    During a tie for position number first occurence row number value is considered
+    During a tie for position number first occurrence row number value is considered
 
-```
+```py
 #Pyspark
 sales_df.withColumn('cume_dist', cume_dist().over(Window.orderBy('Sales'))).\
     withColumn('percent_rank', round(percent_rank().over(Window.orderBy('Sales')), 2)).\
@@ -449,22 +449,22 @@ spark.sql(f''' select *,cume_dist() over (order by Sales) as cume_dist,round(per
 
   
 
-***Important Point : If focus is on distribution use cume_dist(),if focus is on relative distance between data points use percent_rank(),cume_dist() is called inclusive function while the other one is known as exclusive function***  
+***Important Point: If focus is on distribution use cume_dist(), if focus is on relative distance between data points use percent_rank(),cume_dist() is called an inclusive function while the other one is known as an exclusive function***  
 <br>
 ## VALUE Window Functions: ##
 
-This function help us to access value from another row
+This function helps us to access the value from another row
 EXPR is required(All Datatypes supported).  
-Offset is optional(number of rows to lookup forward or backward,default value = 1).  
-Default Value is option(Return the default value if next or previous row is not available ,defaults to NULL)
+Offset Value is optional(number of rows to look up forward or backward, default value = 1).  
+The Default Value is optional(Return the default value if the next or previous row is not available, defaults to NULL)
 
 
 
-- `LAG(EXPR, offset, default)`: Returns the value of `EXPR` from a previous row at the specified `offset`. If there is no such row, returns `default`.Frame Clause is not allowed
+- `LAG(EXPR, offset, default)`: Returns the value of `EXPR` from a previous row at the specified `offset`. If there is no such row, returns `default`.The  Frame Clause is not allowed
 
-- `LEAD(EXPR, offset, default)`: Returns the value of `EXPR` from a following row at the specified `offset`. If there is no such row, returns `default`.Frame Clause is not allowed
+- `LEAD(EXPR, offset, default)`: Returns the value of `EXPR` from a following row at the specified `offset`. If there is no such row, returns `default`.The  Frame Clause is not allowed
 
-```
+```py
 window_spec = Window.orderBy(expr("to_date(Date)"))
 
 sales_df.withColumn('lead_1', lead('Sales', 1).over(window_spec)) \
@@ -508,7 +508,7 @@ Output:
 
 - `NTH_VALUE(EXPR, n)`: Returns the value of `EXPR` from the nth row in the window frame.   
 
-```
+```py
 sales_df.withColumn('first_value', first('Sales').over(window_spec)) \
         .withColumn('last_value', last('Sales').over(window_spec)) \
         .withColumn('last_value_frame', last('Sales').over(window_spec.rowsBetween(Window.currentRow, Window.unboundedFollowing))) \
@@ -541,7 +541,7 @@ Output:
 
 
 <br>
-If you see in the result without frame clause the last value is the last value of the default frame,ie undbounded preceding to current row and results in always value of the current row
+If you see in the result without the frame clause, the last value is the last value of the default frame, ie, unbounded preceding to the current row, and results in always the value of the current row.
 
 
 <br>  
