@@ -1,4 +1,4 @@
-# <p align="center">SQL Window Functions</p> #  
+# <p align="center">SQL Window Functions</p>   
 
 Sql window functions are a set of powerful analytical functions that help us to do row level computations.  
 They differ from group by function by maintaining the row level granularity while performing calculations like aggregation at same time.As a result window functions are helpful in advanced data analysis  
@@ -187,7 +187,10 @@ sales_df.withColumn('Count', count('*').over(Window.partitionBy())).display()
 #Sql
 spark.sql(f'''select *,count(*) over() as Count from sales_Df''').display()
 ```
-Output:
+
+Output:  
+
+
 | id | Date       | Product | City        | Sales | Count |
 |----|------------|---------|-------------|-------|-------|
 | 1  | 2025-06-01 | Laptop  | New York    | 1200  | 8     |
@@ -199,6 +202,7 @@ Output:
 | 6  | 2025-06-03 | Tablet  | Los Angeles | 420   | 8     |
 | 8  | 2025-06-04 | Phone   | Chicago     | 780   | 8     |
 
+  
 ```
 #Pyspark
 sales_df.withColumn('Avg_Overall_Sales', avg('Sales').over(Window.partitionBy()))\
@@ -221,7 +225,9 @@ spark.sql(f'''select *,
           sum(Sales) over (partition by Product order by Date rows between unbounded preceding and current row) as Product_Datewise_sales
           from sales_df order by Product,Date''').display()
 ```
-Output:
+
+Output:  
+
 | id | Date       | Product | City        | Sales | Avg_Overall_Sales | Avg_City_Sales      | Max_City_Sales | Min_City_Sales | Sum_product_sales | Product_Datewise_sales |
 |----|------------|---------|-------------|-------|-------------------|---------------------|----------------|----------------|-------------------|-----------------------|
 | 1  | 2025-06-01 | Laptop  | New York    | 1200  | 850               | 1025                | 1200           | 850            | 3550              | 1200                  |
@@ -233,6 +239,7 @@ Output:
 | 3  | 2025-06-02 | Tablet  | Chicago     | 400   | 850               | 760                 | 1100           | 400            | 820               | 400                   |
 | 6  | 2025-06-03 | Tablet  | Los Angeles | 420   | 850               | 823.33              | 1250           | 420            | 820               | 820                   |
 
+  
 *We can use the frame clause to calculate running and rolling statistics*  
 
 ## RANK Window Functions: ##
@@ -242,7 +249,7 @@ In Rank window Functions the Expression part is empty( except NTILE(N) ) ,Partit
 Following Functions generate Integer ranking and are used for Top/Bottom N Analysis:
 
 - `ROW_NUMBER()`: Assigns a unique sequential integer to each row within a partition, starting at 1.
-
+  
 ```
 #Pyspark
 sales_df.withColumn('RowNumber', row_number().over(Window.orderBy('Sales'))).display()
@@ -253,7 +260,9 @@ spark.sql(f''' select *,row_number() over (order by Sales) as RowNumber from sal
 spark.sql(f''' select *,row_number() over (partition by City order by Sales) as RowNumber_partitioned from sales_df''').display()
 
 ```
-Output:
+
+Output:  
+
 | id | Date       | Product | City        | Sales | RowNumber |
 |----|------------|---------|-------------|-------|-----------|
 | 3  | 2025-06-02 | Tablet  | Chicago     | 400   | 1         |
@@ -264,7 +273,8 @@ Output:
 | 4  | 2025-06-02 | Laptop  | Chicago     | 1100  | 6         |
 | 1  | 2025-06-01 | Laptop  | New York    | 1200  | 7         |
 | 7  | 2025-06-04 | Laptop  | Los Angeles | 1250  | 8         |  
- 
+
+  
 <br>
 <br>
 
@@ -280,9 +290,9 @@ Output:
 | 1  | 2025-06-01 | Laptop  | New York    | 1200  | 2                     |
 
 
-
 - `RANK()`: Assigns a rank to each row within a partition, with gaps in the ranking for tied values.
 
+  
 ```
 #Pyspark
 sales_df.withColumn('rank', rank().over(Window.orderBy('Sales'))).display()
@@ -293,7 +303,9 @@ spark.sql(f''' select *,rank() over (order by Sales) as rank from sales_df''').d
 spark.sql(f''' select *,rank() over (partition by City order by Sales) as rank_partitioned from sales_df''').display()
 ```
 
-Output:
+  
+Output:  
+
 | id | Date       | Product | City        | Sales | rank |
 |----|------------|---------|-------------|-------|-----------|
 | 3  | 2025-06-02 | Tablet  | Chicago     | 400   | 1         |
@@ -305,8 +317,10 @@ Output:
 | 1  | 2025-06-01 | Laptop  | New York    | 1200  | 7         |
 | 7  | 2025-06-04 | Laptop  | Los Angeles | 1250  | 8         |
 
+  
 ***Notice that it tied for 4<sup>th</sup> place,hence rank 5 was skipped and 6 followed 4***
 
+  
 | id | Date       | Product | City        | Sales | rank_partitioned |
 |----|------------|---------|-------------|-------|-----------------------|
 | 3  | 2025-06-02 | Tablet  | Chicago     | 400   | 1                     |
@@ -317,6 +331,8 @@ Output:
 | 7  | 2025-06-04 | Laptop  | Los Angeles | 1250  | 3                     |
 | 5  | 2025-06-03 | Phone   | New York    | 850   | 1                     |
 | 1  | 2025-06-01 | Laptop  | New York    | 1200  | 2                     |
+
+  
 
 - `DENSE_RANK()`: Similar to `RANK()`, but does not leave gaps in the ranking for ties.
 
@@ -330,7 +346,9 @@ spark.sql(f''' select *,dense_rank() over (order by Sales) as dense_rank from sa
 spark.sql(f''' select *,dense_rank() over (partition by City order by Sales) as dense_rank_partitioned from sales_df''').display()
 ```
 
-Output:
+  
+Output:  
+
 
 | id | Date       | Product | City        | Sales | dense_rank |
 |----|------------|---------|-------------|-------|------------|
@@ -341,9 +359,11 @@ Output:
 | 2  | 2025-06-01 | Phone   | Los Angeles | 850   | `4`        |
 | 4  | 2025-06-02 | Laptop  | Chicago     | 1100  | `5`         |
 | 1  | 2025-06-01 | Laptop  | New York    | 1200  | 6          |
-| 7  | 2025-06-04 | Laptop  | Los Angeles | 1250  | 7          |
+| 7  | 2025-06-04 | Laptop  | Los Angeles | 1250  | 7          |  
 
-***Notice that it tied for 4<sup>th</sup> place,then next rank was 5 hence no gap was left***  
+
+***Notice that it tied for 4<sup>th</sup> place,then next rank was 5 hence no gap was left***    
+
 
 | id | Date       | Product | City        | Sales | dense_rank_partitioned |
 |----|------------|---------|-------------|-------|-----------------------|
@@ -354,7 +374,8 @@ Output:
 | 2  | 2025-06-01 | Phone   | Los Angeles | 850   | 2                     |
 | 7  | 2025-06-04 | Laptop  | Los Angeles | 1250  | 3                     |
 | 5  | 2025-06-03 | Phone   | New York    | 850   | 1                     |
-| 1  | 2025-06-01 | Laptop  | New York    | 1200  | 2                     |
+| 1  | 2025-06-01 | Laptop  | New York    | 1200  | 2                     |  
+
 
 <br>
 
@@ -382,6 +403,7 @@ spark.sql(f''' select *,ntile(1) over (order by Sales) as ntilebucket_1,ntile(3)
 | 3  | 2025-06-02 | Tablet  | Chicago     | 400   | 1             | 1             | 1                        |
 | 6  | 2025-06-03 | Tablet  | Los Angeles | 420   | 1             | 1             | 2                        |
 
+  
 <br>
 
 
@@ -413,6 +435,7 @@ sales_df.withColumn('cume_dist', cume_dist().over(Window.orderBy('Sales'))).\
 spark.sql(f''' select *,cume_dist() over (order by Sales) as cume_dist,round(percent_rank() over (order by Sales),2) as percent_rank from sales_df''').display()
 ```
 
+
 | id | Date       | Product | City        | Sales | cume_dist | percent_rank |
 |----|------------|---------|-------------|-------|-----------|--------------|
 | 3  | 2025-06-02 | Tablet  | Chicago     | 400   | 0.125     | 0            |
@@ -423,6 +446,7 @@ spark.sql(f''' select *,cume_dist() over (order by Sales) as cume_dist,round(per
 | 4  | 2025-06-02 | Laptop  | Chicago     | 1100  | 0.75      | 0.71         |
 | 1  | 2025-06-01 | Laptop  | New York    | 1200  | 0.875     | 0.86         |
 | 7  | 2025-06-04 | Laptop  | Los Angeles | 1250  | 1         | 1            |  
+
   
 
 ***Important Point : If focus is on distribution use cume_dist(),if focus is on relative distance between data points use percent_rank(),cume_dist() is called inclusive function while the other one is known as exclusive function***  
@@ -462,7 +486,9 @@ spark.sql('''
 ''').display()
 ```
 
+
 Output:  
+
 
 | id | Date       | Product | City        | Sales | lead_1 | lead_2 | lag_1 | lag_2 |
 |----|------------|---------|-------------|-------|--------|--------|-------|-------|
@@ -473,13 +499,14 @@ Output:
 | 5  | 2025-06-03 | Phone   | New York    | 850   | 420    | 1250   | 1100  | 400   |
 | 6  | 2025-06-03 | Tablet  | Los Angeles | 420   | 1250   | 780    | 850   | 1100  |
 | 7  | 2025-06-04 | Laptop  | Los Angeles | 1250  | 780    | null   | 420   | 850   |
-| 8  | 2025-06-04 | Phone   | Chicago     | 780   | null   | null   | 1250  | 420   |
+| 8  | 2025-06-04 | Phone   | Chicago     | 780   | null   | null   | 1250  | 420   |  
+
 
 - `FIRST_VALUE(EXPR)`: Returns the first value in the window frame.Frame clause is optional
 
 - `LAST_VALUE(EXPR)`: Returns the last value in the window frame.Frame clause though not mandatory is good to have
 
-- `NTH_VALUE(EXPR, n)`: Returns the value of `EXPR` from the nth row in the window frame. 
+- `NTH_VALUE(EXPR, n)`: Returns the value of `EXPR` from the nth row in the window frame.   
 
 ```
 sales_df.withColumn('first_value', first('Sales').over(window_spec)) \
@@ -498,7 +525,9 @@ spark.sql('''
 ''').display()
 ```
 
-Output:
+
+Output:  
+
 | id | Date       | Product | City        | Sales | first_value | last_value | last_value_frame | nth_value |
 |----|------------|---------|-------------|-------|-------------|------------|------------------|-----------|
 | 1  | 2025-06-01 | Laptop  | New York    | 1200  | 1200        | 850        | 780              | 400       |
@@ -508,7 +537,8 @@ Output:
 | 5  | 2025-06-03 | Phone   | New York    | 850   | 1200        | 420        | 780              | 400       |
 | 6  | 2025-06-03 | Tablet  | Los Angeles | 420   | 1200        | 420        | 780              | 400       |
 | 7  | 2025-06-04 | Laptop  | Los Angeles | 1250  | 1200        | 780        | 780              | 400       |
-| 8  | 2025-06-04 | Phone   | Chicago     | 780   | 1200        | 780        | 780              | 400       |
+| 8  | 2025-06-04 | Phone   | Chicago     | 780   | 1200        | 780        | 780              | 400       |  
+
 
 <br>
 If you see in the result without frame clause the last value is the last value of the default frame,ie undbounded preceding to current row and results in always value of the current row
