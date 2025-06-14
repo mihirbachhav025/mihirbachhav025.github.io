@@ -17,7 +17,7 @@ linkedin_username: "mihir-b-240519191"
 #########################################################################################
 ######### Nothing below needs to be changed (unless you know what you're doing) #########
 #########################################################################################
-remote_theme: "chirpy"
+remote_theme: "cotes2020/jekyll-theme-chirpy"
 
 
 kramdown:
