@@ -91,19 +91,18 @@ AVG(Sales) OVER (PARTITION BY Product ORDER BY Day ROWS UNBOUNDED PRECEDING)
 
 - `OVER`: Indicates the use of a window function and defines the window.  
 
-- `PARTITION BY `: Divides the data into partitions based upon the passed columns(we can pass multiple columns), Calculation then takes place on these partitions individually.It is an optional clause; if we don't pass it over will consider the whole dataset as one window
+- `PARTITION BY `: Divides the data into partitions based upon the passed columns(we can pass multiple columns), Calculation then takes place on these partitions individually. It is an optional clause; if we don't pass it over will consider the whole dataset as one window
   
 
 - `ORDER BY `: Orders rows within each partition. This clause is optional in aggregation but compulsory in rank and value functions
   
 
-- `ROWS UNBOUNDED PRECEDING`: This is known as the frame clause and it defines a subset of rows within each window that is to be considered for the calculation. I'll be explaining the frame clause in detail below
+- `ROWS UNBOUNDED PRECEDING`: This is known as the frame clause, and it defines a subset of rows within each window that is to be considered for the calculation. I'll be explaining the frame clause in detail below
 <hr>
 
 ### Deep Dive into the Frame Clause ###  
 
-The frame clause allows us to define a scope inside the window, so calculations are performed only on a specific subset of rows within each partition.
-
+The frame clause enables us to define a scope within the window, allowing calculations to be performed only on a specific subset of rows within each partition.  
 Below, the highlighted cells show how the running total is calculated for each row using:
 
 ```
@@ -175,7 +174,7 @@ Now let's take a look at each window function in Detail. We will be using Spark 
 | 7  | 2025-06-04 | Laptop  | Los Angeles | 1250  |
 | 8  | 2025-06-04 | Phone   | Chicago     | 780   |  
 
-```py
+```
 from pyspark.sql.window import Window
 from pyspark.sql.functions import count
 
@@ -203,7 +202,7 @@ Output:
 | 8  | 2025-06-04 | Phone   | Chicago     | 780   | 8     |
 
   
-```py
+```
 #Pyspark
 sales_df.withColumn('Avg_Overall_Sales', avg('Sales').over(Window.partitionBy()))\
     .withColumn('Avg_City_Sales', avg('Sales').over(Window.partitionBy('City')))\
@@ -250,7 +249,7 @@ The Following Functions generate an Integer ranking and are used for Top/Bottom 
 
 - `ROW_NUMBER()`: Assigns a unique sequential integer to each row within a partition, starting at 1.
   
-```py
+```
 #Pyspark
 sales_df.withColumn('RowNumber', row_number().over(Window.orderBy('Sales'))).display()
 sales_df.withColumn('RowNumber_partitioned', row_number().over(Window.partitionBy('City').orderBy('Sales'))).display()
@@ -293,7 +292,7 @@ Output:
 - `RANK()`: Assigns a rank to each row within a partition, with gaps in the ranking for tied values.
 
   
-```py
+```
 #Pyspark
 sales_df.withColumn('rank', rank().over(Window.orderBy('Sales'))).display()
 sales_df.withColumn('rank_partitioned', rank().over(Window.partitionBy('City').orderBy('Sales'))).display()
@@ -381,7 +380,7 @@ Output:
 
 - `NTILE(n)`: Divides the result set into `n` approximately equal groups (tiles) and assigns a group number to each row. If division is not perfect, the larger group will come first
 
-```py
+```
 #Pyspark
 sales_df.withColumn('ntilebucket_1', ntile(1).over(Window.orderBy('Sales'))).\
     withColumn('ntilebucket_3', ntile(3).over(Window.orderBy('Sales'))).\
@@ -425,7 +424,7 @@ In simple terms, `PERCENT_RANK()` is calculated as:
 
     During a tie for position number first occurrence row number value is considered
 
-```py
+```
 #Pyspark
 sales_df.withColumn('cume_dist', cume_dist().over(Window.orderBy('Sales'))).\
     withColumn('percent_rank', round(percent_rank().over(Window.orderBy('Sales')), 2)).\
@@ -464,7 +463,7 @@ The Default Value is optional(Return the default value if the next or previous r
 
 - `LEAD(EXPR, offset, default)`: Returns the value of `EXPR` from a following row at the specified `offset`. If there is no such row, returns `default`.The  Frame Clause is not allowed
 
-```py
+```
 window_spec = Window.orderBy(expr("to_date(Date)"))
 
 sales_df.withColumn('lead_1', lead('Sales', 1).over(window_spec)) \
@@ -508,7 +507,7 @@ Output:
 
 - `NTH_VALUE(EXPR, n)`: Returns the value of `EXPR` from the nth row in the window frame.   
 
-```py
+```
 sales_df.withColumn('first_value', first('Sales').over(window_spec)) \
         .withColumn('last_value', last('Sales').over(window_spec)) \
         .withColumn('last_value_frame', last('Sales').over(window_spec.rowsBetween(Window.currentRow, Window.unboundedFollowing))) \
