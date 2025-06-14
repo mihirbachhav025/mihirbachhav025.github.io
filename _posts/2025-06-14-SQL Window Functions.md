@@ -544,7 +544,9 @@ Output:
 If you see in the result without frame clause the last value is the last value of the default frame,ie undbounded preceding to current row and results in always value of the current row
 
 
-<br><hr>
+<br>  
+<hr>  
+
 ## Conclusion ##
 
 SQL window functions are essential tools for advanced analytics, enabling you to perform complex calculations while preserving row-level detail. Practicing these examples with your own data will help reinforce the concepts and unlock new possibilities in your data analysis workflows.
