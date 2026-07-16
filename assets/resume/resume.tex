@@ -1,0 +1,244 @@
+%-------------------------
+% Resume in Latex
+% Author : Harshibar
+% Based off of: https://github.com/jakeryang/resume
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,10.5pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\usepackage[scale=0.90,lf]{FiraMono}
+
+% light-grey
+\definecolor{light-grey}{gray}{0.83}
+\definecolor{dark-grey}{gray}{0.3}
+\definecolor{text-grey}{gray}{.08}
+
+\DeclareRobustCommand{\ebseries}{\fontseries{eb}\selectfont}
+\DeclareTextFontCommand{\texteb}{\ebseries}
+
+% custom underline
+\usepackage{contour}
+\usepackage[normalem]{ulem}
+\renewcommand{\ULdepth}{1.8pt}
+\contourlength{0.8pt}
+\newcommand{\myuline}[1]{%
+  \uline{\phantom{#1}}%
+  \llap{\contour{white}{#1}}%
+}
+
+% custom font: helvetica-style
+\usepackage{tgheros}
+\renewcommand*\familydefault{\sfdefault} 
+\usepackage[T1]{fontenc}
+
+\pagestyle{fancy}
+\fancyhf{} 
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% SAFE TOP-PADDING REMOVAL (ELIMINATES THE TOP GRAY GAP)
+\setlength{\headheight}{0pt}
+\setlength{\headsep}{0pt}
+\addtolength{\oddsidemargin}{-0.55in}
+\addtolength{\evensidemargin}{0in}
+\addtolength{\textwidth}{1.1in}
+\addtolength{\topmargin}{-0.75in} 
+\addtolength{\textheight}{1.3in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Section headings
+\titleformat{\section}{
+    \bfseries\vspace{-4pt}\raggedright\large
+}{}{0em}{}[\color{light-grey}{\titlerule[1.5pt]}\vspace{-4pt}]
+
+% Precise formatting layout definitions
+\newcommand{\resumeItem}[1]{
+  \item\small{{#1 \vspace{-1.5pt}}}
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-2.5pt}\item
+    \begin{tabular*}{\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & {\color{dark-grey}\small #2}\vspace{0.5pt}\\
+      \textit{\small#3} & {\color{dark-grey} \small #4}\\
+    \end{tabular*}\vspace{-5.5pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+  \vspace{-2.5pt}\item
+    \begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+      #1 & {\color{dark-grey}\small #2} \\
+    \end{tabular*}\vspace{-5.5pt}
+}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}\vspace{-3pt}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=0.15in, itemsep=1.2pt, parsep=0pt, topsep=1pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-1pt}}
+
+\color{text-grey}
+
+%-------------------------------------------
+%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\renewcommand{\baselinestretch}{0.96}\selectfont
+
+%----------HEADING (SHIFTED UP PERFECTLY)----------
+\begin{center}
+    \textbf{\Huge Mihir Bachhav} \\ \vspace{2pt}
+    \small 
+    \faPhone* \hspace{2pt} \href{tel:+919112018504}{\texttt{+91 9112018504}} \hspace{5pt} $|$ \hspace{5pt}
+    \faEnvelope \hspace{2pt} \href{mailto:mihirbachhav025@gmail.com}{\texttt{mihirbachhav025@gmail.com}} \hspace{5pt} $|$ \hspace{5pt}
+    \faLinkedin \hspace{2pt} \href{https://www.linkedin.com/in/mihir-b-240519191/}{\texttt{mihir\_bachhav}} \hspace{5pt} $|$ \hspace{5pt}
+    \faMapMarker* \hspace{1pt} \texttt{Mumbai, India}
+\end{center}
+
+%-----------EXPERIENCE-----------
+\section{EXPERIENCE}
+  \resumeSubHeadingListStart
+
+   \resumeSubheading
+{GEP Worldwide}{June 2023 -- Sept. 2025}
+{Software Engineer - Data Platform}{Mumbai, Maharashtra}
+\resumeItemListStart
+
+    \resumeItem{\textbf{Re-engineered enterprise reporting workloads} from SQL Server to Azure Databricks using the Medallion Architecture and an internally developed Audit-Balance-Control (ABC) framework, enabling scalable Spark-based analytics and reporting.}
+
+    \resumeItem{\textbf{Optimized large-scale reporting pipelines} and data processing workloads in Azure Databricks, reducing execution times for critical reporting jobs by up to \textbf{50\%}.}
+
+    \resumeItem{\textbf{Built and maintained Power BI semantic models}, tabular models, and DAX measures supporting enterprise reporting and analytics requirements.}
+
+    \resumeItem{\textbf{Owned Dataplatform platform operations}, including production release cycles, production support, escalation management, ticket triage, and facilitation of Agile Scrum ceremonies.}
+
+    \resumeItem{\textbf{Led reporting backend migrations} from GEP Smart (SQL Server) to GEP Quantum (MongoDB), reducing migration setup time from \textbf{7 days to 2 days} through automation utilities and standardized migration workflows.}
+
+    \resumeItem{\textbf{Designed metadata-driven migration frameworks} that leveraged configuration data and domain models to automate reporting setup, schema reconciliation, and client onboarding with minimal manual intervention.}
+
+    \resumeItem{\textbf{Implemented intelligent schema and column-mapping solutions} to bridge reporting differences between legacy and next-generation platforms while preserving existing client reporting experiences.}
+
+    \resumeItem{\textbf{Developed automated report validation and data-quality frameworks} supporting \textbf{500+ reports}, \textbf{100+ clients}, and \textbf{12+ business modules} during large-scale platform migrations.}
+
+    \resumeItem{\textbf{Partnered with product, technology service, implementation, and client teams} to design custom reporting solutions and translate complex business requirements into scalable reporting architectures.}
+
+    \resumeItem{\textbf{Designed and delivered Project Savings reporting transformations}, enabling highly customized client reporting requirements through a reusable metadata-driven reporting framework.}
+
+    \resumeItem{\textbf{Mentored new team members}, contributed to ABC platform enhancements, resolved production-critical defects, and drove continuous improvements to reporting infrastructure.}
+
+  \resumeItemListEnd
+
+    \resumeSubheading
+      {CogXr Labs}{Sep. 2022 -- Mar. 2023}
+      {Software Developer Intern}{Remote, India}
+      \resumeItemListStart
+        \resumeItem{\textbf{Built responsive UI screens using Flutter}, ensuring seamless cross-platform design and optimal app performance.}
+      \resumeItem{\textbf{Integrated Firebase Cloud Storage} for backend storage and implemented push notifications using \textbf{Firebase Cloud Messaging (FCM)}.}
+      \resumeItemListEnd
+
+  \resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{PROJECTS}
+\resumeSubHeadingListStart
+
+\resumeProjectHeading
+{\textbf{Project Savings Reporting Transformation} $|$ \emph{DataBricks, ADF, MongoDB, SQL, Tabular Model}}{}
+\resumeItemListStart
+\resumeItem{\textbf{Designed a metadata-driven reporting framework} to support client-specific Project Savings reporting requirements during the migration from Smart to Quantum.}
+
+\resumeItem{\textbf{Built dynamic ingestion and transformation pipelines} leveraging MongoDB domain models, configuration metadata, and master setup data to generate reporting datasets across diverse client reporting methodologies.}
+
+\resumeItem{\textbf{Delivered a unified reporting solution} capable of supporting multiple savings-calculation and reporting formats through reusable business logic rather than client-specific implementations.}
+
+\resumeItemListEnd
+
+\resumeProjectHeading
+{\textbf{Migration Automation for GEP Quantum} $|$ \emph{Python, Power BI, SQL, MongoDB}}{}
+\resumeItemListStart
+\resumeItem{\textbf{Built a low-touch, low-maintenance migration framework} to automate reporting migrations between Smart and Quantum platforms.}
+
+\resumeItem{\textbf{Developed metadata-driven utilities} that consumed SQL Server configurations and MongoDB domain-model definitions to automate reporting setup, model generation, and environment configuration.}
+
+\resumeItem{\textbf{Implemented intelligent schema-mapping and validation workflows} to reconcile structural differences between platforms while preserving existing report behavior and user experiences.}
+
+
+\resumeItemListEnd
+
+\resumeProjectHeading
+{\textbf{Report Validation \& Data Quality Framework} $|$ \emph{Python, DataBricks, MongoDB, SQL}}{}
+\resumeItemListStart
+\resumeItem{\textbf{Developed an automated data-quality framework} to validate reporting consistency between Smart and Quantum during migration activities.}
+
+\resumeItem{\textbf{Validated 500+ reports} across \textbf{100+ clients} and \textbf{12+ modules} by comparing report outputs, metadata, and underlying datasets across platforms.}
+
+\resumeItem{\textbf{Identified critical reporting discrepancies and platform defects} prior to production deployments, reducing migration risk and improving reporting reliability.}
+
+\resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+
+%-----------EDUCATION-----------
+
+\section{EDUCATION}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {M.Tech. in Computer Science \textnormal}{June. 2028(Expected}
+      {\textbf{International Institute of Information Technology (IIITH)}}{Hyderabad, India}
+      \resumeItemListStart
+        \resumeItem{\textbf{Coursework}: AI/ML, Probability \& Statistics, Advanced Linear Algebra, Software Systems Development.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {B.E. in Computer Engineering \hfill \textnormal{CGPA: 9.37/10}}{Aug. 2019 -- May 2023}
+      {\textbf{Terna Engineering College (University of Mumbai)}}{Navi Mumbai, India}
+      \resumeItemListStart
+        \resumeItem{\textbf{Coursework}: Data Structures and Algorithms, Database Management And Systems, Big Data Warehousing, Python.}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+%-----------PROGRAMMING SKILLS-----------
+\section{SKILLS}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages \& Databases}{: Python, C++, PySpark, SQL, MongoDB} \vspace{2pt} \\
+     \textbf{Cloud \& Data Engineering}{: Azure Databricks (ADB), Azure Data Factory (ADF), Delta Lake, ETL Architecture, Data Pipelines, Spark Performance Tuning, SQL Optimization} \vspace{2pt} \\
+     \textbf{Tools \& Methodologies}{: Power BI, Git/GitHub, Jira, Requirements Gathering, Data Analysis}
+    }}
+ \end{itemize}
+
+%-----------ACHIEVEMENTS-----------
+\section{ACHIEVEMENTS}
+  \resumeItemListStart
+    \resumeItem{\textbf{GEP Kudos Achiever Award} (Jul. 2024 -- Sept. 2024): Honored for exceptional technical execution and unwavering dedication to the organization.}
+  \resumeItemListEnd
+
+%-----------LANGUAGES \& INTERESTS-----------
+\section{LANGUAGES \& INTERESTS}
+ \begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+     \textbf{Languages}{: English, Hindi, Marathi (Full Professional Proficiency)} \hspace{15pt} $|$ \hspace{15pt} \textbf{Interests}{: Chess, Badminton, Reading}
+    }}
+ \end{itemize}
+
+\end{document}
